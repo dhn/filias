@@ -12,8 +12,8 @@ import utils
 import getopt
 import logging
 
-username = "deher003"
-password = "1dHOHZCc"
+username = ""
+password = ""
 
 url = "http://www.ilias.fh-dortmund.de/ilias/webservice/" + \
         "soap/server.php?wsdl"
