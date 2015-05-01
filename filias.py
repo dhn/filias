@@ -2,10 +2,6 @@
 # $Id: filias.py,v 1.1 2014/09/16 19:57:01 dhn Exp $
 # -*- coding: utf-8 -*-
 
-"""
-Copyright (c) 2014 Dennis 'dhn' Herrmann
-"""
-
 import os
 import sh
 import re
@@ -17,12 +13,12 @@ import requests
 from threading import Thread
 from bs4 import BeautifulSoup
 
-username = ""
-password = ""
+__author__ = "Dennis 'dhn' Herrmann <dhn@4bit.ws>"
+__version__ = "1.2"
+__copyright__ = "Copyright (c) 2014 Dennis 'dhn' Herrmann"
+__license__ = "BSD"
 
-savepoint = "/home/dhn/ilias"
-proxy = False
-proxy_url = ""
+savepoint = os.getenv("HOME") + "/ilias"
 
 login_url = "https://www.ilias.fh-dortmund.de/ilias/login.php"
 webdav_url = "http://ilias.fh-dortmund.de/ilias/webdav.php/ilias-fhdo/"
@@ -34,20 +30,48 @@ conn = sqlite3.connect(":memory:")
 
 def getopts():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "f", ["fetch"])
+        opts, args = getopt.getopt(sys.argv[1:],
+                                   "fu:p:P:vh", ["fetch", "username=",
+                                                 "password=", "proxy=",
+                                                 "version", "help"])
     except getopt.GetoptError as err:
         print(str(err))
         usage()
         sys.exit(2)
+    username = None
+    password = None
+    proxy = False
+    proxy_url = None
     for opt, arg in opts:
         if opt in ("-f", "--fetch"):
-            main()
+            main(username, password, proxy, proxy_url)
+        elif opt in ("-u", "--username"):
+            username = arg
+        elif opt in ("-p", "--password"):
+            password = arg
+        elif opt in ("-P", "--proxy"):
+            proxy = True
+            proxy_url = arg
+        elif opt in ("-v", "--version"):
+            version()
+        elif opt in ("-h", "--help"):
+            usage()
         else:
             assert False, "unhandled option"
 
 
 def usage():
-    print("usage: %s [-f|--fetch]" % __file__)
+    print("usage: %s [options]" % __file__)
+    print("   -f, --fetch           Fetch content from ILIAS Server.")
+    print("   -u, --username=USER   Set ilias username to USER.")
+    print("   -p, --password=PASS   Set ilias password to PASS.")
+    print("   -P, --proxy [PROTOCOL://]HOST[:PORT] Use proxy on given port")
+    print("   -h, --help            Show this help and exit.")
+    print("   -v, --version         Show version info and exit.")
+
+
+def version():
+    print("filias %s - %s" % (__version__, __copyright__))
 
 
 def login(login_url, url, username, password, proxy=False, proxy_url=None):
@@ -84,7 +108,7 @@ def login_webdav(login_url, username, password, proxy=False, proxy_url=None):
     return html.text
 
 
-def load(url, crs_name):
+def load(username, password, url, crs_name):
     try:
         sh.wget("--reject", "html,htm", "--accept",
                 "pdf,zip", "--no-parent", "-e", "robots=off",
@@ -161,7 +185,7 @@ def show_sql_db():
     return result
 
 
-def main():
+def main(username, password, proxy, proxy_url):
     if username and password:
         soup = BeautifulSoup(login(login_url, url, username,
                                    password, proxy, proxy_url))
@@ -170,13 +194,15 @@ def main():
             set_course_info(soup)
             create_dir(savepoint, True)
             for crs in show_sql_db():
-                Thread(target=load, args=(webdav_url + crs[1], crs[0])).start()
+                Thread(target=load, args=(username, password,
+                                          webdav_url + crs[1],
+                                          crs[0])).start()
     else:
         print("Please set username and password!")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
+    if len(sys.argv) <= 1:
         usage()
     else:
         getopts()
