@@ -66,7 +66,7 @@ def usage():
 
 def main(username, password, proxy, proxy_url):
     if username and password:
-        print("[*] Loggin into ILIAS...")
+        print("[*] Login into ILIAS...")
         session_id = soap.login(url, username, password)
         user_id = soap.getUserId(url, session_id)
 
