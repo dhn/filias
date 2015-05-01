@@ -40,8 +40,6 @@ def getCourseIds(url, sid, uid):
         match = re.search(regex, str(crs[0].text))
         if match:
             course.append(match.group(0)[14:])
-            # print(match.group(0)[14:])
-            # return match.group(0)[14:]
 
     return course
 
