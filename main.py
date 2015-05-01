@@ -2,6 +2,7 @@
 # $Id: main.py,v 1.1 2015/05/01 21:30:58 dhn Exp $
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 import soap
 import utils
