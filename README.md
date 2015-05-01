@@ -1,14 +1,13 @@
-filias
+filias - Fetch ILIAS
 ======
 
-Fetch content from ILIAS System
+FIlias fetch content from ILIAS System with the SOAP API.
+The old version of FIlias was fetched the content via WebDAV.
 
 ## Requirements ##
 
-    - requests
-    - sh
-    - beautifulsoup4
-    - wget
+    - Python 2.7/3.0
+    - Suds (install with pip)
+    - SQLite
 
-    pip install requests sh beautifulsoup4
-    sudo apt-get install wget
+    pip install suds
