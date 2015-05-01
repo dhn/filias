@@ -1,0 +1,5 @@
+# $Id: .gitignore,v 1.0 2015/05/01 23:16:26 dhn Exp $
+
+*.sql
+*.pyc
+*.swp
