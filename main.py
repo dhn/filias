@@ -68,15 +68,17 @@ def usage():
 def main(username, password, proxy, proxy_url):
     if username and password:
         print("[*] Login into ILIAS...")
-        session_id = soap.login(url, username, password)
-        user_id = soap.getUserId(url, session_id)
+        session_id = soap.login(url, username, password, proxy, proxy_url)
+        user_id = soap.getUserId(url, session_id, proxy, proxy_url)
+        print user_id
 
         print("[*] Fetch all Course Information...")
-        course = soap.getCourseIds(url, session_id, user_id)
+        course = soap.getCourseIds(url, session_id, user_id, proxy, proxy_url)
         for ref_id in course:
-            objects = soap.getCourseObjects(url, session_id, ref_id, user_id)
+            objects = soap.getCourseObjects(url, session_id, ref_id,
+                  user_id, proxy, proxy_url)
             utils.addMatchObjects(objects)
-        
+
         print("[*] Create all Course name folders...")
         utils.createCourseNameFolder("./ilias")
 
@@ -88,7 +90,7 @@ def main(username, password, proxy, proxy_url):
         # content = soap.getFile(url, session_id, 388963, "1")
         # utils.writeFile("test.pdf", utils.base64decode(content))
 
-        soap.logout(url, session_id)
+        soap.logout(url, session_id, proxy, proxy_url)
     else:
         print("Please set username and password!")
 

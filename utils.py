@@ -1,4 +1,4 @@
-# $Id: utils.py,v 1.0 2015/04/30 18:11:54 dhn Exp $
+# $Id: utils.py,v 1.1 2015/05/04 14:31:45 dhn Exp $
 # -*- coding: utf-8 -*-
 
 import os
@@ -18,6 +18,16 @@ def writeFile(filename, content):
     file_name = open(filename, "w")
     file_name.write(content)
     file_name.close()
+
+
+# Set Proxy support
+def setProxy(url, proxy, proxy_url):
+    if proxy:
+        connect = soap.init(url, proxy_url)
+    else:
+        connect = soap.init(url)
+
+    return connect
 
 
 # Create or Change Directory if folder is already exists
