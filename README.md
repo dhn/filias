@@ -7,7 +7,7 @@ The old version of FIlias was fetched the content via WebDAV.
 ## Requirements ##
 
     - Python 3.*
-    - Suds (install with pip)
+    - Suds (install with pip3)
     - SQLite
 
-    pip install suds
+    pip3 install suds-jurko
