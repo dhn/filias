@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import sql
 import soap
 import base64
@@ -52,18 +51,8 @@ def isEmpty(directory):
         return True
 
 
-# FIXME: Fix encoding
-# The Content from ILIAS System (xml file)
-# has to many unicode characters!
-def fix_encoding():
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
-
-
 # Add and Match files/folders into SQL
 def addMatchObjects(objects):
-    fix_encoding()
-
     root = ET.fromstring(objects)
     for files in root:
         file_type = files.get('type')
@@ -100,11 +89,11 @@ def getAllFiles(savepoint, url, session_id):
         title = info[0]
         obj_id = info[1]
         parent_id = info[2]
-        types = info[4]
+        types = info[5]
 
         if types in "crs":
-            print "%s" % title
+            print("%s" % title)
         elif types in "fold":
-            print "[%s]" % title
+            print("[%s]" % title)
         elif types in "file":
-            print "  %s" % title
+            print("  %s" % title)

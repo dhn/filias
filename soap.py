@@ -45,7 +45,6 @@ def getUserId(url, sid, proxy, proxy_url):
 # Get all Course Id's
 def getCourseIds(url, sid, uid, proxy, proxy_url):
     course = []
-    utils.fix_encoding()
     regex = re.compile('il_crs_member_\d{1,8}')
     connect = utils.setProxy(url, proxy, proxy_url)
     xml = connect.service.getUserRoles(sid=sid, user_id=uid)
