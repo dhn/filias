@@ -1,9 +1,11 @@
 # $Id: soap.py,v 1.0 2015/04/29 20:45:33 dhn Exp $
 # -*- coding: utf-8 -*-
 
-import utils, re, sys
+import re
+import utils
 import xml.etree.ElementTree as ET
 from suds.client import Client
+
 
 # Initial
 def init(url, proxy=None):
@@ -22,12 +24,13 @@ def login(url, user, passwd, proxy, proxy_url):
     connect = utils.setProxy(url, proxy, proxy_url)
 
     return connect.service.loginLDAP(client="ilias-fhdo",
-        username=user, password=passwd)
+                                     username=user, password=passwd)
 
 
 # Logout
 def logout(url, sid, proxy, proxy_url):
     connect = utils.setProxy(url, proxy, proxy_url)
+
     if not connect.service.logout(sid=sid):
         print("Failed: Logout failed")
 
@@ -35,6 +38,7 @@ def logout(url, sid, proxy, proxy_url):
 # Get User Id
 def getUserId(url, sid, proxy, proxy_url):
     connect = utils.setProxy(url, proxy, proxy_url)
+
     return connect.service.getUserIdBySid(sid=sid)
 
 
@@ -57,14 +61,16 @@ def getCourseIds(url, sid, uid, proxy, proxy_url):
 # Get all XML Objects: File, Size, Last Change etc.
 def getCourseObjects(url, sid, ref_id, uid, proxy, proxy_url):
     connect = utils.setProxy(url, proxy, proxy_url)
+
     return connect.service.getXMLTree(sid=sid, ref_id=ref_id,
-            types="", user_id=uid)
+                                      types="", user_id=uid)
 
 
 # Get Ref Id by obj_id: return values -> array
 def getRefIdByObjId(url, sid, obj_id, proxy, proxy_url):
     connect = utils.setProxy(url, proxy, proxy_url)
     object_id = str(connect.service.getRefIdsByObjId(sid, obj_id))
+
     return object_id.replace("[", "").replace("]", "")
     # return init(url).service.getRefIdsByObjId(sid, obj_id)
 
@@ -72,21 +78,23 @@ def getRefIdByObjId(url, sid, obj_id, proxy, proxy_url):
 # Get Object Id by ref_id: return values -> array
 def getObjIdsByRefIds(url, sid, ref_id, proxy, proxy_url):
     connect = utils.setProxy(url, proxy, proxy_url)
+
     return connect.service.getObjIdsByRefIds(sid=sid, ref_id=ref_id)
 
 
 # Get Exercise
 def getExercise(url, sid, ref_id, mode, proxy, proxy_url):
     connect = utils.setProxy(url, proxy, proxy_url)
+
     return connect.service.getExerciseXML(sid=sid, ref_id=ref_id,
-            attachment_mode=mode)
+                                          attachment_mode=mode)
 
 
 # Get Tree Childs
 def getTreeChilds(url, sid, ref_id, uid, proxy, proxy_url):
     connect = utils.setProxy(url, proxy, proxy_url)
     return connect.service.getTreeChilds(sid=sid, ref_id=ref_id,
-            types="", user_id=uid)
+                                         types="", user_id=uid)
 
 
 # Get the File
@@ -98,7 +106,7 @@ def getTreeChilds(url, sid, ref_id, uid, proxy, proxy_url):
 def getFile(url, sid, ref_id, mode, proxy, proxy_url):
     connect = utils.setProxy(url, proxy, proxy_url)
     xml = connect.service.getFileXML(sid=sid, ref_id=ref_id,
-            attachment_mode=mode)
+                                     attachment_mode=mode)
 
     root = ET.fromstring(xml)
     return root.find('Content').text
