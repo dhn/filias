@@ -6,7 +6,7 @@ The old version of FIlias was fetched the content via WebDAV.
 
 ## Requirements ##
 
-    - Python 2.7/3.0
+    - Python 3.*
     - Suds (install with pip)
     - SQLite
 
