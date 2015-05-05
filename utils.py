@@ -8,6 +8,7 @@ import soap
 import base64
 import xml.etree.ElementTree as ET
 
+
 # Decode the base64 encoded files
 def base64decode(content):
     return base64.b64decode(content)
@@ -66,9 +67,9 @@ def addMatchObjects(objects):
     root = ET.fromstring(objects)
     for files in root:
         file_type = files.get('type')
-        types = { "crs", "fold", "file" }
+        types = {"crs", "fold", "file"}
 
-        # TODO: Add fileSize, fileExtension 
+        # TODO: Add fileSize, fileExtension
         if file_type in types:
             title = files.find('Title').text
             last_update = files.find('LastUpdate').text
@@ -83,7 +84,8 @@ def addMatchObjects(objects):
             file_size = ""
 
             if sql.create_db():
-                sql.insert_into_db(title, obj_id, parent_id, last_update, file_size, file_type)
+                sql.insert_into_db(title, obj_id, parent_id, last_update,
+                                   file_size, file_type)
 
 
 # Create CourseName folders
@@ -102,43 +104,7 @@ def getAllFiles(savepoint, url, session_id):
 
         if types in "crs":
             print "%s" % title
-        #     crs = types
-        #     change_dir(savepoint + "/" + crs)
-        #     change_dir(savepoint + "/" + crs + "/" + sql.getParentTitle(obj_id)[0])
-        #     print os.getcwd()
-        # # if types in "crs":
-        #     print os.getcwd()
         elif types in "fold":
             print "[%s]" % title
-        #     create_dir(title)
-        #     change_dir(title)
-        #     change_dir(savepoint + "/" + sql.getParentTitle(obj_id)[0])
-        #     print os.getcwd()
-        # # if types in "crs":
-        #     print os.getcwd()
         elif types in "file":
             print "  %s" % title
-            # print os.getcwd(),"/",title
-            # change_dir(savepoint + "/" + sql.getParentTitle(obj_id)[0])
-            # print os.getcwd()
-        # if types in "crs":
-        #     if os.path.exists(savepoint + "/" + title):
-        #         change_dir(savepoint + "/" + title)
-        #     else:
-        #         print os.getcwd()
-        #         os.chdir(savepoint)
-        # elif types in "fold":
-        #     # print "[%s]" % title
-        #     print os.getcwd()
-        #     create_dir(title)
-        #     if not isEmpty(title):
-        #         change_dir(title)
-        #     else:
-        #         print "ordner hoeher"
-        #         change_dir("..")
-        # elif types in "file":
-        #     # content = soap.getFile(url, session_id, obj_id, "1")
-        #     # writeFile(title, base64decode(content))
-        #     # print title
-        #     change_dir(savepoint + "/" + sql.getParentTitle(obj_id)[0])
-        #     print os.getcwd()
