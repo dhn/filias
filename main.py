@@ -70,7 +70,6 @@ def main(username, password, proxy, proxy_url):
         print("[*] Login into ILIAS")
         session_id = soap.login(url, username, password, proxy, proxy_url)
         user_id = soap.getUserId(url, session_id, proxy, proxy_url)
-        print user_id
 
         print("[*] Fetch all Course Information")
         course = soap.getCourseIds(url, session_id, user_id, proxy, proxy_url)

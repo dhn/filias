@@ -1,4 +1,4 @@
-# $Id: utils.py,v 1.1 2015/05/04 14:31:45 dhn Exp $
+# $Id: utils.py,v 1.2 2015/05/05 07:21:54 dhn Exp $
 # -*- coding: utf-8 -*-
 
 import os
@@ -68,9 +68,10 @@ def addMatchObjects(objects):
         file_type = files.get('type')
         types = { "crs", "fold", "file" }
 
-        # TODO: Add fileSize, fileExtension and LastUpdate
+        # TODO: Add fileSize, fileExtension 
         if file_type in types:
             title = files.find('Title').text
+            last_update = files.find('LastUpdate').text
             obj_id = files.find('References').attrib['ref_id']
 
             # Set Course Parent Id to the obj_id
@@ -82,7 +83,7 @@ def addMatchObjects(objects):
             file_size = ""
 
             if sql.create_db():
-                sql.insert_into_db(title, obj_id, parent_id, file_size, file_type)
+                sql.insert_into_db(title, obj_id, parent_id, last_update, file_size, file_type)
 
 
 # Create CourseName folders

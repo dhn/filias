@@ -1,4 +1,4 @@
-# $Id: sql.py,v 1.0 2015/04/30 23:12:06 dhn Exp $
+# $Id: sql.py,v 1.1 2015/05/05 07:22:10 dhn Exp $
 # -*- coding: utf-8 -*-
 
 import sqlite3
@@ -16,6 +16,7 @@ def create_db():
                 title TEXT NOT NULL, \
                 obj_id INT, \
                 parent_id INT, \
+                last_update TEXT, \
                 file_size INT, \
                 types TEXT NOT NULL, \
                 UNIQUE (title, obj_id)) \
@@ -28,12 +29,12 @@ def create_db():
 
 
 # Add thing into SQL
-def insert_into_db(title, obj_id, parent_id, file_size, types):
+def insert_into_db(title, obj_id, parent_id, last_update, file_size, types):
     try:
         with conn:
             conn.execute(" \
-                INSERT OR IGNORE INTO files (title, obj_id, parent_id, file_size, types) \
-                VALUES (?, ?, ?, ?, ?)", (title, obj_id, parent_id, file_size, types))
+                INSERT OR IGNORE INTO files (title, obj_id, parent_id, last_update, file_size, types) \
+                VALUES (?, ?, ?, ?, ?, ?)", (title, obj_id, parent_id, last_update, file_size, types))
     except sqlite3.Error as e:
         print("An error occurred:", e.args[0])
         conn.close()
