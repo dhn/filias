@@ -7,7 +7,6 @@ import sys
 import soap
 import utils
 import getopt
-import logging
 
 __author__ = "Dennis 'dhn' Herrmann <dhn@4bit.ws>"
 __version__ = "1.1-dev"
@@ -75,7 +74,8 @@ def main(username, password, proxy, proxy_url):
         course = soap.getCourseIds(url, session_id, user_id, proxy, proxy_url)
         for ref_id in course:
             objects = soap.getCourseObjects(url, session_id, ref_id,
-                  user_id, proxy, proxy_url)
+                                            user_id, proxy, proxy_url)
+
             utils.addMatchObjects(objects)
 
         print("[*] Create all Course name folders...")
